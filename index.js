@@ -57,7 +57,7 @@ PixelNode_Driver_WebSimulator.prototype.init = function() {
 		process.exit(1);
 	}
 
-	console.log("Init PixelDriver WebSimulator:", this.className);
+	console.log("Init PixelDriver WebSimulator".grey);
 	var self = this;
 
 	// wait for webSocket connections
@@ -71,6 +71,7 @@ PixelNode_Driver_WebSimulator.prototype.init = function() {
 		// remember socket if simulator is inited
 	  	socket.on('simulator_inited', function (data) {
 	  		if (data.success) {
+	  			console.log(("WebSimulator connected ("+socket.conn.id+")").green);
 	  			self.sockets.push(socket);
 	  		}
 	  	});
@@ -90,6 +91,14 @@ PixelNode_Driver_WebSimulator.prototype.setPixel = function(id, r,g,b) {
 PixelNode_Driver_WebSimulator.prototype.sendPixels = function() {
 	var self = this;
 	self.sockets.forEach(function(socket) {
-		socket.emit('simulator_pixels', self.pixels);
+		// just send pixels if socket is still connected
+		if(socket.connected) {
+			socket.emit('simulator_pixels', self.pixels);
+
+		// otherwise remove socket from array
+		} else {
+			console.log(("WebSimulator disconnected ("+socket.conn.id+")").red);
+			self.sockets.splice(self.sockets.indexOf(socket),1);
+		}
 	});
 }
