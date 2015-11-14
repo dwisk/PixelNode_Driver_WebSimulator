@@ -83,8 +83,11 @@ PixelNode_Driver_WebSimulator.prototype.init = function() {
 };
 
 // set's a pixel into pixels array
-PixelNode_Driver_WebSimulator.prototype.setPixel = function(id, r,g,b) {
-	this.pixels[id] = [Math.floor(r),Math.floor(g),Math.floor(b)];
+PixelNode_Driver_WebSimulator.prototype.setPixel = function(strip, id, r,g,b) {
+	if (!this.pixels[strip]) {
+		this.pixels[strip] = [];
+	}
+	this.pixels[strip][id] = [Math.floor(r),Math.floor(g),Math.floor(b)];
 }
 
 // sends pixels array via websocket
