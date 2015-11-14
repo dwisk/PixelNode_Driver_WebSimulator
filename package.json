@@ -1,6 +1,6 @@
 {
   "name": "pixelnode-driver-websimulator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Pixel Driver for simulating pixels on a webinterface",
   "main": "index.js",
   "scripts": {
